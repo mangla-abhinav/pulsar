@@ -16,37 +16,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.pulsar.transaction.impl.common;
+syntax = "proto2";
 
-import com.google.common.annotations.Beta;
-import java.io.Serializable;
-import lombok.Data;
+package pulsar.proto;
+option java_package = "org.apache.pulsar.common.api.proto";
+option optimize_for = LITE_RUNTIME;
 
-/**
- * An identifier for representing a transaction.
- */
-@Beta
-@Data
-public class TxnID implements Serializable {
-
-    private static final long serialVersionUID = 0L;
-
-    /*
-     * The most significant 64 bits of this TxnID.
-     *
-     * @serial
-     */
-    private final long mostSigBits;
-
-    /*
-     * The least significant 64 bits of this TxnID.
-     *
-     * @serial
-     */
-    private final long leastSigBits;
-
-    @Override
-    public String toString() {
-        return "(" + mostSigBits + "," + leastSigBits + ")";
-    }
+message MessageIdData {
+    required uint64 ledgerId = 1;
+    required uint64 entryId  = 2;
+    optional int32 partition = 3 [default = -1];
+    optional int32 batch_index = 4 [default = -1];
+    repeated int64 ack_set = 5 [packed = true];
 }
+
